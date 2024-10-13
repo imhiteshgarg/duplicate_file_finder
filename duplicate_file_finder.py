@@ -7,7 +7,7 @@ import argparse
 
 def list_files(directory: str, directory_to_skip: str) -> None:
     # Traverse the directory and list all files
-    for root, dirs, files in os.walk(directory):
+    for root, _, files in os.walk(directory):
         if directory_to_skip not in root:
             sp = (root.split(directory)[-1]).split('/')[-1]
             for file in files:
@@ -19,7 +19,7 @@ def list_files(directory: str, directory_to_skip: str) -> None:
 def find_potential_duplicates_using_size(directory: str, directory_to_skip: str) -> None:
     # Traverse the directory and list all files
     file_size_to_name_mapper = defaultdict(list)
-    for root, dirs, files in os.walk(directory):
+    for root, _, files in os.walk(directory):
         if directory_to_skip not in root:
             sp = (root.split(directory)[-1]).split('/')[-1]
             # print('sp', sp)
@@ -64,7 +64,7 @@ def find_potential_duplicates_using_MD5_checksum(directory: str, directory_to_sk
     potential_duplicates={}
     # Traverse the directory and list all files
     file_size_to_name_mapper = defaultdict(list)
-    for root, dirs, files in os.walk(directory):
+    for root, _, files in os.walk(directory):
         if directory_to_skip not in root:
             sp = (root.split(directory)[-1]).split('/')[-1]
             # print('sp', sp)
@@ -151,19 +151,19 @@ if __name__ == "__main__":
         print(f"Error: {directory} is not a valid directory.")
         sys.exit(1)
 
-    directory_to_skip = '.git'
+    DIRECTORY_TO_SKIP = '.git'
 
     ######### Step 1
     # Call the function to list files
-    # list_files(directory, directory_to_skip)
+    # list_files(directory, DIRECTORY_TO_SKIP)
 
     ######### Step 2
     #find potential duplicates using file size
-    # find_potential_duplicates_using_size(directory, directory_to_skip)
+    # find_potential_duplicates_using_size(directory, DIRECTORY_TO_SKIP)
 
     ######### Step 3 and Step 5
     # find potential duplicates using file MD5 checksum
-    potential_duplicates = find_potential_duplicates_using_MD5_checksum(directory, directory_to_skip, min_size)
+    potential_duplicates = find_potential_duplicates_using_MD5_checksum(directory, DIRECTORY_TO_SKIP, min_size)
 
     ######### Step 4
     #find duplicates by comparing files byte by byte
